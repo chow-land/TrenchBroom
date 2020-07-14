@@ -11,11 +11,13 @@ done
 BAD_COMMITS=$(git log $(git rev-parse --abbrev-ref HEAD) --oneline --not origin/master $LOG_ARGS -i)
 
 if [ "$BAD_COMMITS" ] ; then
+    echo
     echo "Found bad words in branch history!"
     echo "Bad word list: $BAD_WORDS"
     echo
     echo "Bad commits:"
     echo "$BAD_COMMITS"
+    echo
 
     exit 1
 fi
