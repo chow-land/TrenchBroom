@@ -8,7 +8,11 @@ do
 	LOG_ARGS="$LOG_ARGS --grep=$BAD_WORD"
 done
 
-BAD_COMMITS=$(git log $(git rev-parse --abbrev-ref HEAD) --oneline --not origin/master $LOG_ARGS -i)
+GIT_COMMAND="git log $(git rev-parse --abbrev-ref HEAD) --oneline --not origin/master $LOG_ARGS -i"
+
+git fetch origin master
+echo "$GIT_COMMAND"
+BAD_COMMITS=$(eval "$GIT_COMMAND")
 
 if [ "$BAD_COMMITS" ] ; then
     echo
