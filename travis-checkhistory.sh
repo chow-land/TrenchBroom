@@ -1,5 +1,14 @@
 #!/bin/bash
 
+MASTER_FOUND=$(git branch -r --list origin/master)
+if [ "$MASTER_FOUND" == "" ] ; then
+	echo
+	echo "Skipping check for bad words"
+	echo
+
+	exit 0
+fi
+
 BAD_WORDS="fixup dropme wip"
 
 LOG_ARGS=""
@@ -8,11 +17,10 @@ do
 	LOG_ARGS="$LOG_ARGS --grep=$BAD_WORD"
 done
 
-GIT_COMMAND="git log $(git rev-parse --abbrev-ref HEAD) --oneline --not origin/master $LOG_ARGS -i"
+GIT_COMMAND="git log --oneline $(git rev-parse --abbrev-ref HEAD) $LOG_ARGS -i --not origin/master"
 
-git fetch origin master
 echo "$GIT_COMMAND"
-BAD_COMMITS=$(eval "$GIT_COMMAND")
+BAD_COMMITS=$(eval "$GIT_COMMAND") || exit 1
 
 if [ "$BAD_COMMITS" ] ; then
     echo
