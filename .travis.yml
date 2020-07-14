@@ -3,6 +3,9 @@ matrix:
   include:
     - os: linux
       dist: xenial
+      env: TB_CHECK_HISTORY=true
+    - os: linux
+      dist: xenial
       addons:
         apt:
           sources:
@@ -26,8 +29,9 @@ matrix:
       osx_image: xcode11.3
       env: TB_DEBUG_BUILD=true
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./travis-macos.sh; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./travis-linux.sh; fi
+  - if [[ "$TB_CHECK_HISTORY" == "true" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./travis-checkhistory.sh; fi
+  - if [[ "$TB_CHECK_HISTORY" != "true" ]] && [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./travis-macos.sh; fi
+  - if [[ "$TB_CHECK_HISTORY" != "true" ]] && [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./travis-linux.sh; fi
 deploy:
   provider: releases
   file_glob: true
