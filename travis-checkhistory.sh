@@ -24,7 +24,7 @@ BAD_COMMITS=$(eval "$GIT_COMMAND") || exit 1
 
 if [ "$BAD_COMMITS" ] ; then
     echo
-    echo "Found bad words in branch history!"
+    echo "Found bad words in branch history."
     echo "Bad word list: $BAD_WORDS"
     echo
     echo "Bad commits:"
